@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
 import noImageSelected from "../../assets/no-image-selected.jpg"
+import { Form } from 'react-router-dom'
 
 function AddBook() {
     const [newBook, setNewBook] = useState({
         title: "",
-        thumbnail: noImageSelected,
-        category: [],
+        //thumbnail: noImageSelected,
+        categories: [],
         description: "",
         createdAt: new Date(),
         stars: null,
@@ -36,24 +37,26 @@ function AddBook() {
     }
 
     async function handleSubmit(e) {
+        console.log(e.formData)
         e.preventDefault()
-
-        // const formData = new FormData()
-        // formData.append("thumbnail", newBook.thumbnail)
-        // console.log(formData, newBook.thumbnail)
-        // formData.append("title", "Hello")
+        const formData = new FormData()
+        const {title, slug, description, stars, categories } = newBook
+        formData.append("title", title)
+        formData.append("slug", slug);
+        formData.append("stars", stars);
+        formData.append("description", description);
+        formData.append("category", categories);
+        console.log(formData)
 
         try {
             const response = await fetch('http://localhost:8000/api/books', {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                //body: JSON.stringify({ thumbnail: formData, body: newBook})
-                body: JSON.stringify(newBook)
+                // headers: {
+                //     "Content-Type": "application/json"
+                // },
+                body: formData
+                // body: JSON.stringify(newBook)
             })
-
-            setSubmitted(true)
 
             console.log(response)
             if (response.ok) {
@@ -83,7 +86,11 @@ function AddBook() {
                     <div className="col-1">
                         <label>Upload Thumbnail</label>
                         <img src={image} alt="preview thumbnail" />
-                        <input onChange={handleImageChange} type="file" accept="image/gif, image/jpeg, image/png" />
+                        <input 
+                           // onChange={handleImageChange} 
+                            type="file" 
+                            accept="image/gif, image/jpeg, image/png" 
+                        />
                     </div>
                     <div className="col-2">
                         <label>Title</label>
@@ -101,5 +108,11 @@ function AddBook() {
         </>
     )
 }
+
+// function AddBook(){
+//     <Form method="post">
+
+//     </Form>
+// }
 
 export default AddBook

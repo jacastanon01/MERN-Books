@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import {BrowserRouter as Router, Routes, Route, createBrowserRouter } from "react-router-dom"
 import Home from "./routes/Home/Home"
 import About from "./routes/About/About"
 import Header from "./components/Header"
@@ -8,14 +8,14 @@ import BookDetails from "./routes/Book/BookDetails"
 import AddBook from "./routes/Book/AddBook"
 import CreateBook from "./routes/Book/CreateBook"
 import EditBook from "./routes/Book/EditBook"
+import RootLayout from "./components/RootLayout"
 
 function App() {
 
   return (
     <>
       <Router>
-        <Header />
-        <Routes>
+        <Routes element={<RootLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="books" element={<Book />} />
@@ -23,7 +23,6 @@ function App() {
           <Route path="books/create" element={<CreateBook />} />
           <Route path="books/edit/:slug" element={<EditBook />} />
         </Routes>
-        <Footer />
       </Router>
     </>
   )
